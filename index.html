@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario de Servicio Social — Vista Imprimible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --verde: #1B3A63;
+    --verde-oscuro: #0F2542;
+    --verde-claro: #3E6DA8;
+    --dorado: #D9A62E;
+    --dorado-claro: #F1DFA4;
+    --tinta: #202632;
+    --linea: #DCE2EA;
+    --blanco: #FFFFFF;
+    --rojo-suave: #B5473A;
+  }
+  *{box-sizing:border-box;}
+  
+  body{
+    margin:0;
+    background: linear-gradient(180deg, #0F2542 0%, #1B3A63 40%, #295790 100%);
+    background-attachment: fixed;
+    color:var(--blanco);
+    font-family:'Inter',system-ui,sans-serif;
+    padding:32px 20px 80px;
+    min-height: 100vh;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+
+  /* ENCABEZADO */
+  .header{
+    background:var(--verde-oscuro);
+    color:var(--blanco);
+    border-radius:14px;
+    padding:16px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
+  }
+
+  .logo-slot{
+    width: 140px;
+    height: 65px;
+    border-radius: 8px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none; 
+    position: relative; 
+    z-index: 1;
+    border: 1px solid rgba(255,255,255,0.2);
+    overflow: hidden; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+  }
+  .logo-slot.itm-slot { width: 70px; }
+  .logo-slot img{ width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .header-text{position:relative;z-index:1;flex:1;min-width:200px;text-align:left;}
+  .eyebrow{
+    font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dorado-claro);font-weight:600;margin-bottom:4px;
+  }
+  h1{
+    font-family:'Fraunces',serif;font-weight:600;
+    font-size:1.6rem;margin:0 0 6px;line-height:1.15;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .header-fields{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:.85rem;color:#DCEBE2;}
+  .header-fields input{
+    background:transparent;border:none;border-bottom:1px dashed rgba(255,255,255,.4);
+    color:#fff;font-family:inherit;font-size:.85rem;padding:2px 2px;min-width:200px;
+  }
+  .header-fields input:focus{outline:none;border-bottom-color:var(--dorado-claro);}
+  .header-fields label{opacity:.75;margin-right:4px;}
+
+  /* SECCIONES */
+  section{margin-top:34px;}
+  .section-title{
+    display:flex;align-items:baseline;gap:10px;margin-bottom:14px;
+  }
+  .section-title .num{
+    font-family:'Fraunces',serif;font-weight:600;color:var(--dorado);font-size:1.05rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+  .section-title h2{
+    font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;margin:0;color:var(--blanco);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+
+  /* TARJETA REGISTRO DE ALUMNOS */
+  .roster-card{
+    background:var(--blanco);border-radius:12px;padding:18px 20px 20px;
+    color:var(--tinta);border:1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+  }
+  table.roster{width:100%;border-collapse:collapse;font-size:.86rem;}
+  table.roster th{
+    text-align:left;font-weight:600;color:var(--verde-oscuro);
+    font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;
+    padding:8px 8px;border-bottom:2px solid var(--verde);
+  }
+  table.roster td{padding:10px 8px;border-bottom:1px solid var(--linea);vertical-align:middle;}
+  table.roster input[type="text"]{
+    width:100%;border:1px solid #DCE2EA;background:#FAFBF8;border-radius:6px;
+    padding:7px 8px;font-family:inherit;font-size:.86rem;color:var(--tinta);
+  }
+  table.roster input[type="text"]:focus{outline:none;border-color:var(--verde-claro);background:#fff;}
+  
+  .col-color{width:45px;text-align:center;}
+  .swatch{
+    width:24px;height:24px;border-radius:50%;display:inline-block;
+    cursor:pointer;border:2px solid #fff;box-shadow:0 0 0 1px #ccc;
+    transition:transform .1s; vertical-align:middle;
+  }
+  .swatch:hover{transform:scale(1.15);}
+
+  .schedule-container { display:flex; flex-direction:column; gap:6px; }
+  .time-select-group{ display:flex;align-items:center;gap:6px;font-size:.8rem;flex-wrap:wrap; }
+  .time-select-group select{
+    padding:4px 6px;border-radius:6px;border:1px solid var(--linea);
+    background:#FAFBF8;font-family:inherit;font-size:.8rem;color:var(--tinta);
+  }
+
+  .special-check {
+    display:inline-flex; align-items:center; gap:6px; font-size:.78rem; 
+    font-weight:600; color:var(--verde-oscuro); cursor:pointer; margin-top:4px;
+  }
+  .special-check input { cursor:pointer; }
+
+  .special-grid-hours {
+    display:grid; grid-template-columns: repeat(2, 1fr); gap:6px 12px; margin-top:4px; 
+    background:#F4F6F9; padding:8px; border-radius:6px; border:1px solid var(--linea);
+  }
+
+  .btn-del{
+    background:none;border:none;color:var(--rojo-suave);cursor:pointer;
+    font-size:1.2rem;line-height:1;padding:4px 8px;border-radius:6px;
+  }
+  .btn-del:hover{background:#F6E4E1;}
+  
+  .roster-actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px;}
+  .btn{
+    font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;
+    border-radius:8px;padding:9px 16px;border:1px solid var(--verde-claro);
+    background:var(--verde-claro);color:#fff;transition:.15s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .btn:hover{background:var(--verde-oscuro);}
+  .btn.ghost{background:var(--verde-oscuro);color:var(--blanco);border-color:rgba(255,255,255,0.3);}
+  .btn.ghost:hover{background:var(--verde);border-color:var(--blanco);}
+  .btn.gold{background:var(--dorado);border-color:var(--dorado);color:var(--verde-oscuro);box-shadow: 0 4px 12px rgba(217,166,46,0.35);}
+  .btn.gold:hover{background:#b88b22;}
+  .btn.danger{background:#B5473A;border-color:#B5473A;color:#fff;}
+  .btn.danger:hover{background:#8c3429;}
+  .btn.outline-danger{background:transparent;border:1px solid #B5473A;color:#B5473A;}
+  .btn.outline-danger:hover{background:#B5473A;color:#fff;}
+  
+  .roster-count{font-size:.78rem;color:#777;}
+
+  /* POPOVER PALETA */
+  .color-popover {
+    display:none;position:fixed;z-index:999;background:#fff;border-radius:10px;
+    padding:12px;box-shadow:0 10px 30px rgba(0,0,0,0.3);border:1px solid #ccc;
+    width:240px;grid-template-columns:repeat(8, 1fr);gap:6px;
+  }
+  .color-popover.active {display:grid;}
+  .color-option {
+    width:22px;height:22px;border-radius:4px;cursor:pointer;border:1px solid rgba(0,0,0,0.1);
+    transition:transform .1s;
+  }
+  .color-option:hover {transform:scale(1.2);}
+
+  /* CALENDARIO Y LISTA DE ALUMNOS */
+  .cal-toolbar{display:flex;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+  .mes-selector{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.82rem;color:var(--blanco);font-weight:600;}
+  .mes-selector select{
+    font-family:inherit;font-size:.84rem;font-weight:600;color:var(--tinta);
+    border:1px solid var(--linea);border-radius:8px;padding:7px 10px;background:#fff;cursor:pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  .cal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+  .cal-dow{
+    text-align:center;font-size:.68rem;font-weight:700;letter-spacing:.06em;
+    color:var(--dorado-claro);text-transform:uppercase;padding-bottom:4px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+  .cal-cell{
+    background:var(--blanco);border-radius:10px;min-height:120px;max-height: 190px;
+    padding:9px;display:flex;flex-direction:column;color:var(--tinta);
+    border:1px solid rgba(255,255,255,0.4);box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+  .cal-cell.empty{background:transparent;border:none;box-shadow:none;}
+  .cal-daynum{
+    font-family:'Fraunces',serif;font-weight:600;font-size:1rem;color:var(--verde-oscuro);
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;
+    border-bottom: 1px solid var(--linea); padding-bottom: 4px;
+  }
+  .cal-daynum .dname{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;color:var(--dorado);text-transform:uppercase;}
+  
+  /* ESTILOS DE LISTA DE ALUMNOS EN CALENDARIO */
+  .student-list {
+    display: flex; flex-direction: column; gap: 6px; margin-top: 4px;
+    overflow-y: auto; flex: 1; padding-right: 4px;
+  }
+  .student-list::-webkit-scrollbar { width: 4px; }
+  .student-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+  
+  .student-item {
+    display: flex; align-items: flex-start; gap: 6px; font-size: .75rem;
+    padding: 4px; border-radius: 6px; transition: background 0.2s;
+  }
+  .student-item:hover { background: #f0f4f8; }
+  .student-item input[type="checkbox"] { margin-top: 3px; cursor: pointer; }
+  .student-info { display: flex; flex-direction: column; cursor: pointer; user-select: none; width: 100%; }
+  .student-name { font-weight: 700; cursor: pointer; line-height: 1.1; }
+  .student-time { font-size: .65rem; color: #666; margin-top: 2px; font-weight: 500; }
+
+  /* ESTADO BLOQUEADO */
+  body.is-locked #seccion-estudiantes {
+    pointer-events: none; opacity: 0.5; filter: grayscale(100%);
+  }
+  body.is-locked .student-item:not(.selected) { display: none; }
+  body.is-locked .student-item input[type="checkbox"] { display: none; }
+  body.is-locked .student-item { padding: 2px 0; background: transparent; }
+  body.is-locked .student-list { overflow-y: visible; }
+  body.is-locked .cal-cell { max-height: none; }
+  
+  /* RESUMEN DE HORAS */
+  .hours-summary-card {
+    background:var(--blanco);border-radius:12px;padding:20px;color:var(--tinta);
+    border:1px solid rgba(255,255,255,0.3);margin-top:20px;box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+  }
+  .hours-summary-header {
+    display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--verde);padding-bottom:10px;margin-bottom:14px;
+  }
+  .hours-summary-header h3 {margin:0;font-family:'Fraunces',serif;color:var(--verde-oscuro);font-size:1.1rem;}
+  .total-badge {
+    background:var(--verde-oscuro);color:var(--dorado-claro);padding:6px 14px;border-radius:20px;font-weight:700;font-size:.9rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
+  
+  .student-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .student-summary-card {
+    background: #FAFBF8;
+    border: 1px solid var(--linea);
+    border-left: 5px solid var(--verde-claro);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  }
+  .student-summary-card .name {
+    font-weight: 700;
+    font-size: .9rem;
+    color: var(--tinta);
+  }
+  .student-summary-card .days-count {
+    font-size: .72rem;
+    color: #666;
+    margin-top: 2px;
+  }
+  .student-summary-card .hours {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--verde-oscuro);
+  }
+
+  /* BARRA INFERIOR */
+  .actions-bar{
+    margin-top:30px;background:var(--blanco);border-radius:12px;padding:20px 24px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;
+    color:var(--tinta);border:1px solid rgba(255,255,255,0.4);box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+  }
+  .actions-bar p{margin:0;font-size:.82rem;color:#555;max-width:520px;}
+
+  /* CONFIGURACIÓN DE IMPRESIÓN COMPACTA EN UNA HOJA HORIZONTAL */
+  @media print{
+    @page { 
+      size: landscape; 
+      margin: 5mm; 
+    }
+    html, body {
+      background: #FFFFFF !important;
+      color: #000 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      padding: 0 !important; 
+      margin: 0 !important;
+    }
+    
+    #seccion-estudiantes, .actions-bar, 
+    .cal-toolbar, .roster-actions, .btn-del, .color-popover, 
+    .special-check, .section-title { display: none !important; }
+
+    section { margin-top: 10px !important; }
+    
+    .wrap { max-width: 100% !important; margin: 0 !important; width: 100% !important; }
+
+    .header {
+      background: var(--verde-oscuro) !important;
+      padding: 8px 16px !important;
+      box-shadow: none !important;
+      border-radius: 8px !important;
+    }
+    .header h1 { font-size: 1.2rem !important; margin-bottom: 2px !important; }
+    .logo-slot { height: 45px !important; width: 100px !important; }
+    .logo-slot.itm-slot { width: 50px !important; }
+
+    .cal-dow {
+      color: var(--verde-oscuro) !important;
+      font-size: .6rem !important;
+      padding-bottom: 2px !important;
+    }
+
+    .cal-grid {
+      gap: 4px !important;
+    }
+
+    .cal-cell {
+      min-height: 60px !important;
+      max-height: none !important;
+      padding: 4px 6px !important;
+      border: 1px solid #ccc !important;
+      border-radius: 6px !important;
+      box-shadow: none !important;
+      background: #fff !important;
+    }
+
+    .cal-daynum {
+      font-size: .75rem !important;
+      margin-bottom: 2px !important;
+      padding-bottom: 2px !important;
+    }
+
+    .student-list {
+      gap: 1px !important;
+      margin-top: 2px !important;
+    }
+
+    .student-item {
+      padding: 1px 0 !important;
+      line-height: 1 !important;
+    }
+
+    .student-name { font-size: .62rem !important; }
+    .student-time { font-size: .52rem !important; }
+
+    /* SECCIÓN DE RESUMEN EN IMPRESIÓN */
+    .hours-summary-card {
+      margin-top: 10px !important;
+      padding: 10px 14px !important;
+      border-radius: 8px !important;
+      box-shadow: none !important;
+      border: 1px solid #ccc !important;
+    }
+
+    .hours-summary-header {
+      padding-bottom: 4px !important;
+      margin-bottom: 6px !important;
+    }
+    .hours-summary-header h3 { font-size: .85rem !important; }
+    .total-badge { padding: 3px 10px !important; font-size: .75rem !important; }
+    .hours-summary-card p { display: none !important; }
+
+    .student-summary-grid {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+      gap: 6px !important;
+    }
+
+    .student-summary-card {
+      padding: 6px 8px !important;
+    }
+    .student-summary-card .name { font-size: .72rem !important; }
+    .student-summary-card .days-count { font-size: .6rem !important; }
+    .student-summary-card .hours { font-size: .85rem !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ENCABEZADO -->
+  <div class="header">
+    <div class="logo-slot" title="Tecnológico Nacional de México">
+      <img src="logo-tecnm.jfif" alt="Logo TecNM">
+    </div>
+    <div class="header-text">
+      <div class="eyebrow">Tecnológico Nacional de México — Mexicali</div>
+      <h1>Calendario de Servicio Social</h1>
+      <div class="header-fields">
+        <div><label>Prestador:</label><input type="text" id="header-prestador" value="Auxiliar de Comunicación y Difusión" oninput="saveDataToStorage()"></div>
+        <div><label>Periodo:</label><input type="text" id="header-periodo" value="Agosto 2026"></div>
+      </div>
+    </div>
+    <div class="logo-slot itm-slot" title="Instituto Tecnológico de Mexicali">
+      <img src="logo-itm.png" alt="Logo ITM" style="object-fit: contain; padding: 4px; background: #fff; border-radius: 6px;">
+    </div>
+  </div>
+
+  <!-- SECCIÓN 01: REGISTRO DE ALUMNOS -->
+  <section id="seccion-estudiantes">
+    <div class="section-title">
+      <span class="num">01</span>
+      <h2>Registro de Alumnos</h2>
+    </div>
+    <div class="roster-card">
+      <table class="roster">
+        <thead>
+          <tr>
+            <th class="col-color">Color</th>
+            <th>Nombre del Alumno</th>
+            <th>Horario de Trabajo (7:00 a 20:00)</th>
+            <th style="width: 40px;"></th>
+          </tr>
+        </thead>
+        <tbody id="roster-tbody"></tbody>
+      </table>
+      <div class="roster-actions">
+        <button class="btn ghost" onclick="addRosterRow()">+ Añadir Alumno</button>
+        <button class="btn outline-danger" onclick="clearAllData()">Limpiar Todos los Datos</button>
+        <span class="roster-count" id="roster-count">0 Alumnos registrados</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 02: CALENDARIO -->
+  <section id="seccion-calendario">
+    <div class="section-title">
+      <span class="num">02</span>
+      <h2>Asistencia y Horarios de Trabajo</h2>
+    </div>
+    <div class="cal-toolbar">
+      <div class="mes-selector">
+        <label>Mes:</label>
+        <select id="select-mes" onchange="renderCalendar()">
+          <option value="0">Enero</option>
+          <option value="1">Febrero</option>
+          <option value="2">Marzo</option>
+          <option value="3">Abril</option>
+          <option value="4">Mayo</option>
+          <option value="5">Junio</option>
+          <option value="6">Julio</option>
+          <option value="7" selected>Agosto</option>
+          <option value="8">Septiembre</option>
+          <option value="9">Octubre</option>
+          <option value="10">Noviembre</option>
+          <option value="11">Diciembre</option>
+        </select>
+        <label style="margin-left: 10px;">Año:</label>
+        <select id="select-anio" onchange="renderCalendar()">
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026" selected>2026</option>
+          <option value="2027">2027</option>
+        </select>
+      </div>
+      <button id="btn-lock" class="btn danger" onclick="toggleLock()">Bloquear Horarios</button>
+    </div>
+
+    <div class="cal-grid" id="cal-grid"></div>
+  </section>
+
+  <!-- SECCIÓN 03: RESUMEN DE HORAS ACUMULADAS POR ALUMNO -->
+  <section id="seccion-resumen">
+    <div class="hours-summary-card">
+      <div class="hours-summary-header">
+        <h3>03. Vista Previa: Horas Laboradas por Alumno</h3>
+        <div class="total-badge" id="total-hours-badge">Total Acumulado: 0 hrs</div>
+      </div>
+      <p style="font-size: 0.8rem; color: #666; margin-top: 0; margin-bottom: 14px;">
+        Resumen total de horas acumuladas en el mes según los días de asistencia asignados.
+      </p>
+      <div class="student-summary-grid" id="student-summary-grid"></div>
+    </div>
+  </section>
+
+  <!-- BARRA INFERIOR -->
+  <div class="actions-bar">
+    <div>
+      <strong>¿Listo para autorizar?</strong>
+      <p>Asegúrate de "Bloquear Horarios" antes de imprimir para una vista limpia.</p>
+    </div>
+    <div class="actions-btns">
+      <button class="btn gold" onclick="window.print()">Imprimir / Guardar PDF</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- POPOVER DE COLORES -->
+<div id="color-popover" class="color-popover"></div>
+
+<script>
+  const workDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie'];
+  const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+  
+  const palette40 = [
+    '#1B3A63', '#295790', '#3E6DA8', '#D9A62E', '#B5473A', '#2E7D32', '#C2185B', '#7B1FA2',
+    '#512DA8', '#303F9F', '#0288D1', '#0097A7', '#00796B', '#388E3C', '#689F38', '#AFB42B',
+    '#FBC02D', '#FFA000', '#F57C00', '#E64A19', '#5D4037', '#616161', '#512DA8', '#C0392B',
+    '#9B59B6', '#2980B9', '#1ABC9C', '#2ECC71', '#F1C40F', '#E67E22', '#E74C3C', '#34495E',
+    '#16A085', '#27AE60', '#2980B9', '#8E44AD', '#2C3E50', '#F39C12', '#D35400', '#7F8C8D'
+  ];
+
+  let activeSwatch = null;
+  let studentsData = [];
+  let attendanceState = {}; 
+
+  // Configuración del Selector de Color
+  const popover = document.getElementById('color-popover');
+  palette40.forEach(color => {
+    const opt = document.createElement('div');
+    opt.className = 'color-option';
+    opt.style.backgroundColor = color;
+    opt.onclick = function() {
+      if(activeSwatch) {
+        activeSwatch.style.backgroundColor = color;
+        syncStudents();
+      }
+      popover.classList.remove('active');
+    };
+    popover.appendChild(opt);
+  });
+
+  function openColorPicker(e, swatchEl) {
+    if (document.body.classList.contains('is-locked')) return;
+    e.stopPropagation();
+    activeSwatch = swatchEl;
+    const rect = swatchEl.getBoundingClientRect();
+    popover.style.top = (rect.bottom + window.scrollY + 5) + 'px';
+    popover.style.left = (rect.left + window.scrollX) + 'px';
+    popover.classList.add('active');
+  }
+
+  document.addEventListener('click', () => popover.classList.remove('active'));
+
+  function generateTimeOptions(selectedHour) {
+    let options = '';
+    for (let h = 7; h <= 20; h++) {
+      const timeStr = (h < 10 ? '0' + h : h) + ':00';
+      const isSelected = h === parseInt(selectedHour) ? 'selected' : '';
+      options += `<option value="${timeStr}" ${isSelected}>${timeStr}</option>`;
+    }
+    return options;
+  }
+
+  function getStudentId(tr) {
+    if (!tr.dataset.id) tr.dataset.id = 'std_' + Math.random().toString(36).substr(2, 9);
+    return tr.dataset.id;
+  }
+
+  function toggleSpecialSchedule(checkbox) {
+    const td = checkbox.closest('td');
+    const normalGroup = td.querySelector('.normal-turn-container');
+    const specialGroup = td.querySelector('.special-grid-hours');
+    
+    if (checkbox.checked) {
+      normalGroup.style.display = 'none';
+      specialGroup.style.display = 'grid';
+    } else {
+      normalGroup.style.display = 'flex';
+      specialGroup.style.display = 'none';
+    }
+    syncStudents();
+  }
+
+  function addRosterRow(name = "", defaultIn = 8, defaultOut = 12, defaultColor = "#1B3A63", isSpecial = false, specialHours = [10, 14, 16, 17], customId = null) {
+    if (document.body.classList.contains('is-locked')) return;
+    
+    const tbody = document.getElementById('roster-tbody');
+    const tr = document.createElement('tr');
+    if (customId) tr.dataset.id = customId;
+
+    tr.innerHTML = `
+      <td class="col-color">
+        <span class="swatch" style="background:${defaultColor};" onclick="openColorPicker(event, this)"></span>
+      </td>
+      <td><input type="text" value="${name}" placeholder="(sin nombre)" oninput="syncStudents()"></td>
+      <td>
+        <div class="schedule-container">
+          <div class="time-select-group normal-turn-container" style="display:${isSpecial ? 'none' : 'flex'};">
+            <span>De:</span>
+            <select class="roster-in" onchange="syncStudents()">${generateTimeOptions(defaultIn)}</select>
+            <span>a:</span>
+            <select class="roster-out" onchange="syncStudents()">${generateTimeOptions(defaultOut)}</select>
+          </div>
+          <label class="special-check">
+            <input type="checkbox" ${isSpecial ? 'checked' : ''} onchange="toggleSpecialSchedule(this)"> Horario especial
+          </label>
+          <div class="special-grid-hours" style="display:${isSpecial ? 'grid' : 'none'};">
+            <div class="time-select-group"><span>Hora 1:</span><select class="sp-1" onchange="syncStudents()">${generateTimeOptions(specialHours[0])}</select></div>
+            <div class="time-select-group"><span>Hora 2:</span><select class="sp-2" onchange="syncStudents()">${generateTimeOptions(specialHours[1])}</select></div>
+            <div class="time-select-group"><span>Hora 3:</span><select class="sp-3" onchange="syncStudents()">${generateTimeOptions(specialHours[2])}</select></div>
+            <div class="time-select-group"><span>Hora 4:</span><select class="sp-4" onchange="syncStudents()">${generateTimeOptions(specialHours[3])}</select></div>
+          </div>
+        </div>
+      </td>
+      <td><button class="btn-del" onclick="removeRosterRow(this)">×</button></td>
+    `;
+    tbody.appendChild(tr);
+    updateRosterCount();
+    syncStudents();
+  }
+
+  function removeRosterRow(btn) {
+    if (document.body.classList.contains('is-locked')) return;
+    btn.closest('tr').remove();
+    updateRosterCount();
+    syncStudents();
+  }
+
+  function updateRosterCount() {
+    const count = document.querySelectorAll('#roster-tbody tr').length;
+    document.getElementById('roster-count').innerText = `${count} Alumno(s) registrado(s)`;
+  }
+
+  function syncStudents() {
+    studentsData = [];
+    const rows = document.querySelectorAll('#roster-tbody tr');
+    
+    rows.forEach(tr => {
+      const id = getStudentId(tr);
+      const color = tr.querySelector('.swatch').style.backgroundColor;
+      let name = tr.querySelector('input[type="text"]').value.trim();
+      if(name === "") name = "(sin nombre)";
+      
+      const isSpecial = tr.querySelector('.special-check input').checked;
+      let scheduleText = '';
+      let totalHours = 0;
+
+      if (!isSpecial) {
+        const tIn = tr.querySelector('.roster-in').value;
+        const tOut = tr.querySelector('.roster-out').value;
+        scheduleText = `De: ${tIn} a ${tOut}`;
+        totalHours = Math.max(0, parseInt(tOut) - parseInt(tIn));
+      } else {
+        const selects = tr.querySelectorAll('.special-grid-hours select');
+        const t1 = selects[0].value, t2 = selects[1].value;
+        const t3 = selects[2].value, t4 = selects[3].value;
+        scheduleText = `${t1}-${t2} y ${t3}-${t4}`;
+        totalHours = Math.max(0, parseInt(t2) - parseInt(t1)) + Math.max(0, parseInt(t4) - parseInt(t3));
+      }
+
+      studentsData.push({ id, name, color, scheduleText, totalHours });
+    });
+
+    updateCalendarLists();
+    saveDataToStorage();
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById('cal-grid');
+    grid.innerHTML = '';
+
+    workDays.forEach(dow => {
+      const div = document.createElement('div');
+      div.className = 'cal-dow';
+      div.innerText = dow;
+      grid.appendChild(div);
+    });
+
+    const month = parseInt(document.getElementById('select-mes').value);
+    const year = parseInt(document.getElementById('select-anio').value);
+    document.getElementById('header-periodo').value = `${monthNames[month]} ${year}`;
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    let firstDayIndex = new Date(year, month, 1).getDay();
+    
+    let offset = 0;
+    if (firstDayIndex >= 1 && firstDayIndex <= 5) offset = firstDayIndex - 1;
+    else if (firstDayIndex === 6 || firstDayIndex === 0) offset = 0;
+
+    for (let i = 0; i < offset; i++) {
+      const emptyCell = document.createElement('div');
+      emptyCell.className = 'cal-cell empty';
+      grid.appendChild(emptyCell);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = new Date(year, month, day);
+      const dayOfWeek = date.getDay();
+
+      if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-cell';
+      cell.innerHTML = `
+        <div class="cal-daynum">
+          <span>${day}</span>
+          <span class="dname">${workDays[dayOfWeek - 1]}</span>
+        </div>
+        <div class="student-list" id="day-list-${day}"></div>
+      `;
+      grid.appendChild(cell);
+    }
+
+    updateCalendarLists();
+    saveDataToStorage();
+  }
+
+  function updateCalendarLists() {
+    const lists = document.querySelectorAll('.student-list');
+    const year = document.getElementById('select-anio').value;
+    const month = document.getElementById('select-mes').value;
+
+    lists.forEach(list => {
+      const day = list.id.replace('day-list-', '');
+      const dateKey = `${year}-${month}-${day}`;
+      
+      const hasCustomEntry = attendanceState.hasOwnProperty(dateKey);
+      const currentSelected = hasCustomEntry ? attendanceState[dateKey] : studentsData.map(s => s.id);
+
+      list.innerHTML = ''; 
+
+      studentsData.forEach(std => {
+        const isChecked = currentSelected.includes(std.id);
+        const item = document.createElement('div');
+        item.className = `student-item ${isChecked ? 'selected' : ''}`;
+        
+        item.innerHTML = `
+          <input type="checkbox" id="chk-${dateKey}-${std.id}" ${isChecked ? 'checked' : ''} onchange="toggleAttendance('${dateKey}', '${std.id}', this)">
+          <div class="student-info" onclick="triggerCheckbox('chk-${dateKey}-${std.id}')">
+            <label class="student-name" style="color: ${std.color}">${std.name}</label>
+            <span class="student-time">${std.scheduleText}</span>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    });
+
+    calculateTotalHours();
+  }
+
+  function triggerCheckbox(chkId) {
+    if (document.body.classList.contains('is-locked')) return;
+    const chk = document.getElementById(chkId);
+    if(chk) {
+      chk.checked = !chk.checked;
+      chk.dispatchEvent(new Event('change'));
+    }
+  }
+
+  function toggleAttendance(dateKey, studentId, checkbox) {
+    if (!attendanceState.hasOwnProperty(dateKey)) {
+      attendanceState[dateKey] = studentsData.map(s => s.id);
+    }
+    
+    if (checkbox.checked) {
+      if (!attendanceState[dateKey].includes(studentId)) attendanceState[dateKey].push(studentId);
+      checkbox.closest('.student-item').classList.add('selected');
+    } else {
+      attendanceState[dateKey] = attendanceState[dateKey].filter(id => id !== studentId);
+      checkbox.closest('.student-item').classList.remove('selected');
+    }
+    calculateTotalHours();
+    saveDataToStorage();
+  }
+
+  function calculateTotalHours() {
+    const studentGrid = document.getElementById('student-summary-grid');
+    studentGrid.innerHTML = '';
+    
+    let totalGeneral = 0;
+    const year = parseInt(document.getElementById('select-anio').value);
+    const month = parseInt(document.getElementById('select-mes').value);
+
+    if (studentsData.length === 0) {
+      studentGrid.innerHTML = `<span style="font-size:0.85rem; color:#888;">No hay alumnos registrados.</span>`;
+      document.getElementById('total-hours-badge').innerText = `Total Acumulado: 0 hrs`;
+      return;
+    }
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    studentsData.forEach(std => {
+      let stdTotalHours = 0;
+      let stdDaysCount = 0;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(year, month, day);
+        const dayOfWeek = date.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) continue;
+
+        const dateKey = `${year}-${month}-${day}`;
+        const hasCustomEntry = attendanceState.hasOwnProperty(dateKey);
+        const isPresent = hasCustomEntry ? attendanceState[dateKey].includes(std.id) : true;
+
+        if (isPresent) {
+          stdTotalHours += std.totalHours;
+          stdDaysCount++;
+        }
+      }
+
+      totalGeneral += stdTotalHours;
+
+      const card = document.createElement('div');
+      card.className = 'student-summary-card';
+      card.style.borderLeftColor = std.color;
+      card.innerHTML = `
+        <div>
+          <div class="name" style="color:${std.color}">${std.name}</div>
+          <div class="days-count">${stdDaysCount} días programados</div>
+        </div>
+        <div class="hours">${stdTotalHours} hrs</div>
+      `;
+      studentGrid.appendChild(card);
+    });
+
+    document.getElementById('total-hours-badge').innerText = `Total Acumulado: ${totalGeneral} hrs`;
+  }
+
+  function toggleLock() {
+    const body = document.body;
+    const btn = document.getElementById('btn-lock');
+    
+    if (body.classList.contains('is-locked')) {
+      body.classList.remove('is-locked');
+      btn.innerText = "Bloquear Horarios";
+      btn.classList.remove('gold');
+      btn.classList.add('danger');
+    } else {
+      body.classList.add('is-locked');
+      btn.innerText = "Desbloquear (Editar)";
+      btn.classList.remove('danger');
+      btn.classList.add('gold');
+    }
+  }
+
+  /* PERSISTENCIA CON LOCALSTORAGE */
+  function saveDataToStorage() {
+    const rows = document.querySelectorAll('#roster-tbody tr');
+    const rosterData = [];
+
+    rows.forEach(tr => {
+      const id = getStudentId(tr);
+      const color = tr.querySelector('.swatch').style.backgroundColor;
+      const name = tr.querySelector('input[type="text"]').value;
+      const isSpecial = tr.querySelector('.special-check input').checked;
+      
+      const tIn = tr.querySelector('.roster-in').value;
+      const tOut = tr.querySelector('.roster-out').value;
+      
+      const sp1 = tr.querySelector('.sp-1') ? tr.querySelector('.sp-1').value : "10:00";
+      const sp2 = tr.querySelector('.sp-2') ? tr.querySelector('.sp-2').value : "14:00";
+      const sp3 = tr.querySelector('.sp-3') ? tr.querySelector('.sp-3').value : "16:00";
+      const sp4 = tr.querySelector('.sp-4') ? tr.querySelector('.sp-4').value : "17:00";
+
+      rosterData.push({
+        id, color, name, isSpecial, tIn, tOut, specialHours: [sp1, sp2, sp3, sp4]
+      });
+    });
+
+    const fullData = {
+      prestador: document.getElementById('header-prestador').value,
+      mes: document.getElementById('select-mes').value,
+      anio: document.getElementById('select-anio').value,
+      roster: rosterData,
+      attendance: attendanceState
+    };
+
+    localStorage.setItem('servicio_social_calendar_data', JSON.stringify(fullData));
+  }
+
+  function loadDataFromStorage() {
+    const rawData = localStorage.getItem('servicio_social_calendar_data');
+    if (!rawData) return false;
+
+    try {
+      const data = JSON.parse(rawData);
+      
+      if (data.prestador) document.getElementById('header-prestador').value = data.prestador;
+      if (data.mes !== undefined) document.getElementById('select-mes').value = data.mes;
+      if (data.anio !== undefined) document.getElementById('select-anio').value = data.anio;
+
+      if (data.attendance) attendanceState = data.attendance;
+
+      if (data.roster && data.roster.length > 0) {
+        document.getElementById('roster-tbody').innerHTML = '';
+        data.roster.forEach(r => {
+          addRosterRow(
+            r.name, 
+            parseInt(r.tIn), 
+            parseInt(r.tOut), 
+            r.color, 
+            r.isSpecial, 
+            r.specialHours.map(h => parseInt(h)), 
+            r.id
+          );
+        });
+      }
+      return true;
+    } catch(e) {
+      console.error("Error al cargar datos guardados:", e);
+      return false;
+    }
+  }
+
+  function cargarAlumnosIniciales() {
+    document.getElementById('roster-tbody').innerHTML = '';
+    addRosterRow("Daniel Barajas", 13, 17, "#1B3A63", false);
+    addRosterRow("Linda Osuna", 12, 16, "#295790", false);
+    addRosterRow("Ismael Rodriguez", 12, 17, "#3E6DA8", false);
+    addRosterRow("Omar Hernandez", 9, 13, "#00796B", false);
+    addRosterRow("Paola Espinoza", 8, 12, "#7B1FA2", true, [10, 14, 16, 17]);
+    addRosterRow("Israel Martinez", 8, 12, "#C2185B", true, [10, 14, 16, 17]);
+    addRosterRow("David Aguilar", 12, 15, "#E67E22", false);
+    addRosterRow("Arlenne Lozano", 12, 15, "#27AE60", false);
+  }
+
+  function clearAllData() {
+    if (confirm("¿Estás seguro de que deseas borrar todos los alumnos y configuraciones guardadas?")) {
+      localStorage.removeItem('servicio_social_calendar_data');
+      attendanceState = {};
+      cargarAlumnosIniciales();
+      renderCalendar();
+    }
+  }
+
+  window.onload = function() {
+    const hasData = loadDataFromStorage();
+    if (!hasData) {
+      cargarAlumnosIniciales();
+    }
+    renderCalendar();
+  };
+</script>
+</body>
+</html>
